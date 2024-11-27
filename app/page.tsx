@@ -3,12 +3,11 @@ import { supabase } from '../lib/initSupabase';
 export default async function Home() {
 
   const { data, error } = await supabase
-    .from("tootp_users.users")
+    .schema('tootp_users')
+    .from("users")
     .select('username');
   
   if (error) return <div>{error.message}</div>;
-
-  console.log("hello" + data);
 
   return (
     <div>
