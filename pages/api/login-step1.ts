@@ -1,7 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { supabase } from "../../lib/initSupabase";
 import bcrypt from "bcrypt";
-import { serialize } from 'cookie';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
@@ -24,9 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(401).json({ error: 'Invalid username or password' });
         }
 
-        res.setHeader('Set-Cookie', serialize('username', user.username, { path: '/'}));
-
-        return res.status(200).json({ message: 'Login successful' });
+        return res.status(200).json({ userID: user.id });
     }
     else {
         res.setHeader('Allow', ['POST']);
