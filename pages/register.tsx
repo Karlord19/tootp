@@ -5,7 +5,7 @@ export default function Register() {
 
     const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const formData = new FormData(e.target);
+        const formData = new FormData(e.target as HTMLFormElement);
         const username = formData.get('username') as string;
         const password = formData.get('password') as string;
         const expiration = formData.get('expiration');

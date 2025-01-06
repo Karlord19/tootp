@@ -22,6 +22,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(500).json({ error: countError.message });
         }
 
+        if (count === null) {
+            console.log('count is null');
+            return res.status(500).json({ error: 'Error counting users' });
+        }
+
         if (count > 0) {
             console.log('user already exists');
             return res.status(400).json({ error: 'User already exists' });
