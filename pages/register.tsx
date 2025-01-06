@@ -3,7 +3,7 @@ import { useState } from 'react';
 export default function Register() {
     const [error, setError] = useState<string | null>(null);
 
-    const handleRegister = async (e: any) => {
+    const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.target);
         const username = formData.get('username') as string;

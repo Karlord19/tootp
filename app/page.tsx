@@ -1,4 +1,5 @@
 import { supabase } from '../lib/initSupabase';
+import Link from 'next/link';
 
 export default async function Home() {
 
@@ -22,16 +23,16 @@ export default async function Home() {
       </ul>
       </div>
       <div style={{ display: 'flex', gap: '10px' }}>
-      <a href="/register">
+      <Link href="/register">
         <button style={{ padding: '10px 20px', fontSize: '1em', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
         Register
         </button>
-      </a>
-      <a href="/login">
+      </Link>
+      <Link href="/login">
         <button style={{ padding: '10px 20px', fontSize: '1em', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
         Login
         </button>
-      </a>
+      </Link>
       </div>
     </div>
   );

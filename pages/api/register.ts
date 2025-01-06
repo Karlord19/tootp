@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const hashedPassword = await bcrypt.hash(password, 10);
 
         console.log('sending data to db');
-        const { data, error } =
+        const { error } =
             await supabase
             .schema('tootp_users')
             .from('users')
