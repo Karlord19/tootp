@@ -1,21 +1,39 @@
-import { supabase } from '../lib/initSupabase';
+"use client";
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-export default async function Home() {
+export default function Home() {
 
-  const { data, error } = await supabase
-    .schema('tootp_users')
-    .from("users")
-    .select('username');
+  const [users, setUsers] = useState<{ username: string }[]>([]);
+  const [error, setError] = useState(null);
   
-  if (error) return <div>{error.message}</div>;
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const response = await fetch('/api/users');
+      const result = await response.json();
+      if (response.ok) {
+        setUsers(result);
+      }
+      else {
+        setError(result.error);
+        return;
+      }
+    };
+
+    fetchUsers();
+  }, []);
+
+  if (error) {
+    return <div style={{ color: 'red' }}>{error}</div>;
+  }
 
   return (
     <div style={{ padding: '20px' }}>
       <div style={{ marginBottom: '20px' }}>
       <h1 style={{ fontSize: '2em', color: '#333' }}>Users</h1>
       <ul style={{ listStyleType: 'none', padding: 0 }}>
-        {data?.map((user) => (
+        {users.map((user) => (
         <li key={user.username}>
           {user.username}
         </li>
