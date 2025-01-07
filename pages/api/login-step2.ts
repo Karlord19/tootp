@@ -26,7 +26,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const isTotpValid = authenticator.verify({ token: totpCode, secret: user.totp_secret });
         
         if (!isTotpValid) {
-            const correctTotpCode = authenticator.generate(user.totp_secret);
             return res.status(401).json({ error: 'Invalid TOTP code.' });
         }
 
