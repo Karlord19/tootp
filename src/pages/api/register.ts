@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { supabase } from "../../lib/initSupabase";
+import { supabase } from "../../lib/supabase";
 import bcrypt from "bcrypt";
 import { authenticator } from "otplib";
 import QRCode from "qrcode";
@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).json({ error: 'Missing fields' });
         }
 
-        if (totp_expiry < 6 || totp_expiry > 299) {
+        if (totp_expiry < 5 || totp_expiry > 300) {
             return res.status(400).json({ error: 'TOTP expiry must be in range 5 to 300' });
         }
         
