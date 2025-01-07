@@ -24,6 +24,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         authenticator.options = { step: parseInt(user.totp_expiry) };
         const isTotpValid = authenticator.verify({ token: totpCode, secret: user.totp_secret });
+
+        await supabase
+            .schema('tootp_users')
+            .from('log')
+            .insert([
+                {
+                    user_id: user.id,
+                    message: 'login via TOTP',
+                    success: isTotpValid,
+                }
+            ]);
         
         if (!isTotpValid) {
             return res.status(401).json({ error: 'Invalid TOTP code.' });

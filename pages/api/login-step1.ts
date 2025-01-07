@@ -19,6 +19,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
 
+        await supabase
+            .schema('tootp_users')
+            .from('log')
+            .insert([
+                {
+                    user_id: user.id,
+                    message: 'login via password',
+                    success: isPasswordValid,
+                }
+            ]);
+
         if (!isPasswordValid) {
             return res.status(401).json({ error: 'Invalid password' });
         }

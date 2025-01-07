@@ -40,7 +40,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         authenticator.options = { step: totp_expiry };
         const totpSecret = authenticator.generateSecret();
 
-        const { error } =
+        const { data, error } =
             await supabase
             .schema('tootp_users')
             .from('users')
@@ -51,11 +51,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                     totp_secret: totpSecret,
                     totp_expiry: totp_expiry,
                 }
-            ]);
+            ])
+            .select();
         
         if (error) {
             return res.status(500).json({ error: error.message });
         }
+
+        if (!data || data[0].id === undefined) {
+            return res.status(500).json({ error: 'Error while registering user' });
+        }
+
+        await supabase
+            .schema('tootp_users')
+            .from('log')
+            .insert([
+                {
+                    user_id: data[0].id,
+                    message: 'register',
+                    success: true,
+                }
+            ]);
 
         const otpauth = authenticator.keyuri(username, 'tootp', totpSecret);
         const qrCodeDataURL = await QRCode.toDataURL(otpauth);
