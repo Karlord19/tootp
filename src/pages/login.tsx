@@ -4,6 +4,7 @@ export default function Login() {
     const [error, setError] = useState<string | null>(null);
     const [step, setStep] = useState(1);
     const [userID, setUserID] = useState<string | null>(null);
+    const [password, setPassword] = useState<string | null>(null);
     const [attempts, setAttempts] = useState(0);
 
     const handleStep1 = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -24,6 +25,7 @@ export default function Login() {
 
         if (response.ok) {
             setUserID(result.userID);
+            setPassword(password);
             setStep(2);
             setError(null);
         } else {
@@ -41,12 +43,13 @@ export default function Login() {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ userID, totpCode }),
+            body: JSON.stringify({ userID, password, totpCode }),
         });
 
         const result = await response.json();
 
         if (response.ok) {
+            setPassword(null);
             alert('Login successful');
             window.location.href = '/user';
         } else {

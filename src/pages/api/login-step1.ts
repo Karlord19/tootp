@@ -6,6 +6,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (req.method === 'POST') {
         const { username, password } = req.body;
 
+        if (!username || !password) {
+            return res.status(400).json({ error: 'Missing username or password' });
+        }
+
         const { data: user, error } = await supabase
             .schema('tootp_users')
             .from('users')
