@@ -61,6 +61,8 @@ Vybíráme Vercel, protože je zdarma pro takovýto projekt a poskytuje všechny
 Je propojen s GitHubem s tímto repozitářem, při pushi se automaticky deployne.
 V projektu jsou nastavené environment variables pro připojení k databázi.
 
+## Funkce
+
 ### Home page
 
 Soubor s domovskou stránkou je [src/pages/index.tsx](src/pages/index.tsx).
