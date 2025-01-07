@@ -7,7 +7,14 @@ import QRCode from "qrcode";
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (req.method === 'POST') {
         const { username, password, totp_expiry } = req.body;
-        console.log('user wants totp expiry of', totp_expiry);
+
+        if (!username || !password || !totp_expiry) {
+            return res.status(400).json({ error: 'Missing fields' });
+        }
+
+        if (totp_expiry < 4 || totp_expiry > 301) {
+            return res.status(400).json({ error: 'TOTP expiry must be in range 5 to 300' });
+        }
         
         const { count, error: countError } =
             await supabase
@@ -21,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
 
         if (count === null) {
-            return res.status(500).json({ error: 'Error counting users' });
+            return res.status(500).json({ error: 'Error while determining username uniqueness' });
         }
 
         if (count > 0) {

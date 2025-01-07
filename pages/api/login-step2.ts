@@ -19,7 +19,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             .single();
         
         if (error || !user) {
-            console.log('ujdajujda');
             return res.status(401).json({ error: error.message });
         }
 
@@ -28,7 +27,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         
         if (!isTotpValid) {
             const correctTotpCode = authenticator.generate(user.totp_secret);
-            console.log(`Correct TOTP code: ${correctTotpCode}`);
             return res.status(401).json({ error: 'Invalid TOTP code.' });
         }
 

@@ -23,28 +23,35 @@ export default function Register() {
         const result = await response.json();
 
         if (response.ok) {
+            setError(null);
             setQRCodeDataURL(result.qrCodeDataURL);
         } else {
             setError(result.error);
-            alert(result.error);
         }
     };
 
     return (
         <div>
-            <h1>Register</h1>
-            <form onSubmit={handleRegister}>
-                <input type="text" name="username" placeholder="Username" required />
-                <input type="password" name="password" placeholder="Password" required />
-                <input type="number" name="totp_expiry" placeholder="Expiration" defaultValue="30" required />
+            {!qrCodeDataURL && (
+                <div>
+                    <h1>Register</h1>
+                    <form onSubmit={handleRegister}>
+                        <input type="text" name="username" placeholder="Username" required />
+                        <input type="password" name="password" placeholder="Password" required />
+                        <br />
+                        <label htmlFor="totp_expiry">Expiration (seconds):</label>
+                        <input type="number" name="totp_expiry" placeholder="Expiration" defaultValue="30" required />
 
-                <button type="submit">Register</button>
-            </form>
+                        <button type="submit">Register</button>
+                    </form>
+                </div>
+            )}
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {qrCodeDataURL && (
                 <div>
                     <h2>Scan this QR code with your authenticator app. Recommended Aegis Authenticator.</h2>
                     <img src={qrCodeDataURL} alt="QR code" />
+                    <br />
                     <Link href="/">Home</Link>
                 </div>
             )}
