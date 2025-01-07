@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             return res.status(400).json({ error: 'Missing fields' });
         }
 
-        if (totp_expiry < 4 || totp_expiry > 301) {
+        if (totp_expiry < 6 || totp_expiry > 299) {
             return res.status(400).json({ error: 'TOTP expiry must be in range 5 to 300' });
         }
         
